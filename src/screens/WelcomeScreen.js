@@ -34,7 +34,7 @@ export default function WelcomeScreen({ navigation }) {
         <Center style={{flex: 1}}>
           <Text
             style={styles.title}
-          >Estadias</Text>
+          >Estadías</Text>
           <Text
             style={styles.info}
           >Entérate de las ofertas para estadias que suben tus docentes</Text>

@@ -34,10 +34,10 @@ export default function WelcomeScreen({ navigation }) {
         <Center style={{flex: 1}}>
           <Text
             style={styles.title}
-          >Bolsa de trabajo</Text>
+          >Estadias</Text>
           <Text
             style={styles.info}
-          >Busca las ofertas laborales mas recientes</Text>
+          >Entérate de las ofertas para estadias que suben tus docentes</Text>
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles.buttonAccept}
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     textAlign: 'center',
     color: '#fff',
-    paddingHorizontal: 60,
+    paddingHorizontal: 40,
     marginTop: 20
   },
   buttonAccept: {

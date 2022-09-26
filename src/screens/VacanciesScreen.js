@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { format, parseISO , setDefaultOptions } from 'date-fns';
 import { es } from 'date-fns/locale';
-import { StyleSheet, TouchableOpacity  } from "react-native";
+import { StyleSheet, TouchableOpacity, useWindowDimensions  } from "react-native";
 import { Box, Text, ScrollView, Spinner, HStack, Heading } from "native-base";
 import { Shadow } from 'react-native-shadow-2';
 import { AntDesign } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
 import pluralize from 'pluralize';
 import * as NavigationBar from 'expo-navigation-bar';
 import axios from 'axios';
+import Button from "../components/Button";
 setDefaultOptions({ locale: es });
 
 function Vacancie({vacancieName, organizationName, publisherName, date}){
@@ -107,29 +109,32 @@ export default function VacanciesScreen({ navigation }) {
   const date = format(new Date(), 'dd \'de\' MMMM');
   const [vacancies, setVacancies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { height, width } = useWindowDimensions();
 
   useEffect(() => {
     NavigationBar.setBackgroundColorAsync("#dceade");
     setVacancies([]);
     setLoading(true);
-    setTimeout(async () => {
-      axios({
-        method: 'get',
-        url: 'http://192.168.0.17:891/api/vacantes',
-      })
-      .then(function (response) {
-        const { data } = response;
-        if (data.success) {
-          setVacancies(data.result.map(row => ({
-              name: row.puesto,
-              organization_name: row.empresa,
-              publisher_name: row.publicador_nombre,
-              date: format(parseISO(row.fecha), 'dd MMM, hh:mm a')
-          })));
-        }
-      })
-      .finally(() => setLoading(false));
-    }, 500);
+    axios({
+      method: 'get',
+      url: 'http://192.168.0.17:891/api/vacantes',
+      timeout: 5000
+    })
+    .then(response => {
+      const { data } = response;
+      if (data.success) {
+        setVacancies(data.result.map(row => ({
+            name: row.puesto,
+            organization_name: row.empresa,
+            publisher_name: row.publicador_nombre,
+            date: format(parseISO(row.fecha), 'dd MMM, hh:mm a')
+        })));
+      }
+    })
+    .catch(err => {
+      Toast.show({type: 'error', text1: 'ERROR', text2: 'No fue posible obtener los datos'});
+    })
+    .finally(() => setLoading(false));
   }, []);
 
   return (
@@ -150,6 +155,11 @@ export default function VacanciesScreen({ navigation }) {
         style={styles.vacanciesScrollContainer}
       >
         { loading ? <VacanciesLoading/> : <VacanciesContent vacancies={vacancies}/> }
+        <Button
+          style={styles.buttonNewVacancie}
+          label="Crear nueva vacante"
+          onPress={() => navigation.navigate('NewVacancie')}
+        />
       </Box>
     </SafeAreaView>
   );
@@ -190,6 +200,10 @@ const styles = StyleSheet.create({
     color: '#504f4f',
     fontWeight: '500',
     marginHorizontal: 30,
+  },
+  buttonNewVacancie: {
+    marginTop: 10,
+    marginHorizontal: 20
   }
 });
 

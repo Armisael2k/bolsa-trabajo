@@ -11,14 +11,6 @@ export default function WelcomeScreen({ navigation }) {
     NavigationBar.setBackgroundColorAsync("#63b76d");
   }, []);
 
-  const handleAccept = () => {
-    // navigation.reset({
-    //   index: 0,
-    //   routes: [{ name: 'Vacancies' }],
-    // });
-    navigation.navigate('Vacancies');
-  }
-
   return (
     <Box
       style={styles.container}
@@ -41,12 +33,13 @@ export default function WelcomeScreen({ navigation }) {
           <TouchableOpacity
             activeOpacity={0.7}
             style={styles.buttonAccept}
-            onPress={handleAccept}
+            onPress={() => navigation.navigate('Vacancies')}
           >
             <AntDesign name="doubleright" size={30} color="#6e6e6d" />
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
+            onPress={() => navigation.navigate('Login')}
           >
             <Text
               style={styles.link}

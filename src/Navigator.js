@@ -2,6 +2,7 @@ import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/
 import WelcomeScreen from './screens/WelcomeScreen';
 import VacanciesScreen from './screens/VacanciesScreen';
 import NewVacancieScreen from './screens/NewVacancieScreen';
+import LoginScreen from './screens/LoginScreen';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,12 @@ export default function Navigator() {
       <Stack.Screen
         name="Vacancies"
         component={VacanciesScreen}/>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}/>
+      <Stack.Screen
+        name="NewVacancie"
+        component={NewVacancieScreen}/>
     </Stack.Navigator>
   );
 }
